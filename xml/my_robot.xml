@@ -1,0 +1,37 @@
+<mujoco model="my_robot">
+  <worldbody>
+    <geom type="plane" size="5 5 0.1" rgba="0.9 0.9 0.9 1"/>
+    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+    <light directional="true" pos="0 0 10" dir="-0.5 0.1 -0.9" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" castshadow="true"/>
+
+    <body name="base_body" pos="0 0 0.036">
+      <joint type="free"/>
+      <geom type="cylinder" size="0.16 0.01" rgba="1 0.41 0.71 1"/>
+
+      <body name="head" pos="0.06 0 0.025">
+        <geom type="box" size="0.015 0.015 0.015" rgba="0.13 0.7 0.3 1"/>
+      </body>
+
+      <body name="left_wheel" pos="0 0.175 0">
+        <joint name="base_to_left_wheel" type="hinge" axis="0 1 0"/>
+        <geom type="cylinder" size="0.036 0.004" euler="-90 0 0" rgba="0.05 0.05 0.05 1"/>
+        <geom type="box" size="0.018 0.002 0.002" pos="0.018 0 0" rgba="1 1 1 1"/>
+      </body>
+
+      <body name="right_wheel" pos="0 -0.175 0">
+        <joint name="base_to_right_wheel" type="hinge" axis="0 1 0"/>
+        <geom type="cylinder" size="0.036 0.004" euler="-90 0 0" rgba="0.05 0.05 0.05 1"/>
+        <geom type="box" size="0.018 0.002 0.002" pos="0.018 0 0" rgba="1 1 1 1"/>
+      </body>
+
+      <body name="caster_swivel" pos="-0.12 0 -0.005">
+        <joint name="caster_swivel_joint" type="hinge" axis="0 0 1"/>
+        <geom type="cylinder" size="0.006 0.004" rgba="0.3 0.3 0.3 1"/>
+        <body name="caster_wheel" pos="0 0 -0.016">
+          <joint name="caster_wheel_joint" type="hinge" axis="0 1 0"/>
+          <geom type="sphere" size="0.015" rgba="0.15 0.15 0.15 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>
