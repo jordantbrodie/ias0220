@@ -12,6 +12,15 @@
 <depend>rclpy</depend>
 <depend>std_msgs</depend>
 <depend>geometry_msgs</depend>
+<depend>nav_msgs</depend>
+
+<exec_depend>launch</exec_depend>
+<exec_depend>launch_ros</exec_depend>
+<exec_depend>dr_mujoco</exec_depend>
+<exec_depend>teleop_twist_keyboard</exec_depend>
+<exec_depend>tf2_ros</exec_depend>
+<exec_depend>rviz2</exec_depend>
+<exec_depend>rqt_graph</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

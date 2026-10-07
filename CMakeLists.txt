@@ -26,5 +26,9 @@ endif()
 install (PROGRAMS ias0220_243483/test_node.py ias0220_243483/random_walker.py ias0220_243483/position_calculator.py DESTINATION lib/${PROJECT_NAME})
 
 
+# Task 4: install launch files, MuJoCo model, RViz config and data so
+# get_package_share_directory() can find them after a build
+install(DIRECTORY launch mujoco config
+  DESTINATION share/${PROJECT_NAME})
 
 ament_package()
