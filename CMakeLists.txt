@@ -23,7 +23,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install (PROGRAMS ias0220_243483/test_node.py ias0220_243483/random_walker.py ias0220_243483/position_calculator.py DESTINATION lib/${PROJECT_NAME})
+install (PROGRAMS ias0220_243483/odometry.py DESTINATION lib/${PROJECT_NAME})
 
 
 # Task 4: install launch files, MuJoCo model, RViz config and data so

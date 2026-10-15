@@ -1,4 +1,4 @@
-"""Task 4.1 - spawn the differential-drive robot in MuJoCo, drive it with the
+""" Task 4.2 - odometry: the differential-drive robot in MuJoCo, drive it with the
 keyboard and inspect it in RViz and rqt_graph."""
 
 import os
@@ -19,7 +19,7 @@ def generate_launch_description():
 
     # Our own package: robot model and RViz config are installed here
     package_path = get_package_share_directory('ias0220_243483')
-    rvizconfig = os.path.join(package_path, 'config', 'task4_part1.rviz')
+    rvizconfig = os.path.join(package_path, 'config', 'task4_part2.rviz')
 
     # Path of the robot XML; can be overridden on the command line
     robot_model_path_arg = DeclareLaunchArgument(
@@ -66,6 +66,13 @@ def generate_launch_description():
         executable='rqt_graph',
         name='rqt_graph')
 
+        # Task 4.2: our odometry node, computing /my_odom from the wheel encoders
+    odometry_node = Node(
+        package='ias0220_243483',
+        executable='odometry.py',
+        name='odometry',
+        output='screen')
+
     return LaunchDescription([
         robot_model_path_arg,
         simulation_include,
@@ -73,4 +80,5 @@ def generate_launch_description():
         tf2_node,
         rviz2_node,
         rqt_graph_node,
+	odometry_node,
     ])
