@@ -18,8 +18,9 @@ No sensor is needed for playback. Earlier takes are deliberately excluded.
 The assignment requests a bag named recorded; Take 6 retains its identifying name
 and is selected explicitly with bag_path, without duplicating or renaming raw data.
 
-Evidence: data/plotjuggler_offline_bag.png is the existing offline PlotJuggler screenshot;
-data/take6_orientation.png and data/take6_distance.png are the final take plots.
+Evidence: screenshot 1 is supplied as two final Take 6 images:
+data/take6_orientation.png and data/take6_distance.png. Explain this split in the
+Moodle submission comment; these replace plotjuggler_offline_bag.png.
 Orientation x/y/z are quaternion components, not Euler angles in degrees.
 The online screenshot contains both rqt_plot and PlotJuggler.
 The RViz screenshot shows axes and Global Status OK, but the range cone is not
