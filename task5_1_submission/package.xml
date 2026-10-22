@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package format="3">
+  <name>ias0220_243483</name>
+  <version>0.0.0</version>
+  <description>Package for IAS0220 Robot Guidance and Software</description>
+  <maintainer email="jobrod@taltech.ee">Jordan Thomas Brodie</maintainer>
+  <license>TODO: License declaration</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>ias0220_sensors</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>rosbag2_transport</exec_depend>
+  <exec_depend>rviz_imu_plugin</exec_depend>
+  <exec_depend>python3-serial</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
+  <exec_depend>plotjuggler</exec_depend>
+  <exec_depend>plotjuggler_ros</exec_depend>
+  <exec_depend>rqt_plot</exec_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
