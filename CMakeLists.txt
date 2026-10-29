@@ -23,12 +23,23 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install (PROGRAMS ias0220_243483/odometry.py DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS
+  ias0220_243483/odometry.py
+  ias0220_243483/steering_node.py
+  DESTINATION lib/${PROJECT_NAME})
 
 
 # Task 4: install launch files, MuJoCo model, RViz config and data so
 # get_package_share_directory() can find them after a build
 install(DIRECTORY launch mujoco config
   DESTINATION share/${PROJECT_NAME})
+
+# Task 5.2: bags used by the launch files (found via get_package_share_directory).
+# rosbag_to_X only exists after recording it in the lab, so install it only if present.
+foreach(bag record2 rosbag_to_X)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bags/${bag})
+    install(DIRECTORY bags/${bag} DESTINATION share/${PROJECT_NAME}/bags)
+  endif()
+endforeach()
 
 ament_package()

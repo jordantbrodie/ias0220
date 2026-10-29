@@ -39,6 +39,10 @@
   <exec_depend>plotjuggler_ros</exec_depend>
   <exec_depend>rqt_plot</exec_depend>
 
+  <!-- Task 5.2 steering node -->
+  <exec_depend>ros2bag</exec_depend>
+  <exec_depend>rosbag2_storage_mcap</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
