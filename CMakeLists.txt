@@ -24,22 +24,19 @@ if(BUILD_TESTING)
 endif()
 
 install(PROGRAMS
-  ias0220_243483/odometry.py
-  ias0220_243483/steering_node.py
+  ias0220_243483/image_publisher.py
+  ias0220_243483/camera_calibration.py
   DESTINATION lib/${PROJECT_NAME})
 
 
-# Task 4: install launch files, MuJoCo model, RViz config and data so
+# Install launch files, MuJoCo model (kept for Task 6.2) and RViz config so
 # get_package_share_directory() can find them after a build
 install(DIRECTORY launch mujoco config
   DESTINATION share/${PROJECT_NAME})
 
-# Task 5.2: bags used by the launch files (found via get_package_share_directory).
-# rosbag_to_X only exists after recording it in the lab, so install it only if present.
-foreach(bag record2 rosbag_to_X)
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/bags/${bag})
-    install(DIRECTORY bags/${bag} DESTINATION share/${PROJECT_NAME}/bags)
-  endif()
-endforeach()
+# Task 6.1: calibration images (data/images). ament_cmake has no setup.py
+# data_files, so the data folder is installed here instead.
+install(DIRECTORY data
+  DESTINATION share/${PROJECT_NAME})
 
 ament_package()
