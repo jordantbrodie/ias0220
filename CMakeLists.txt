@@ -26,6 +26,7 @@ endif()
 install(PROGRAMS
   ias0220_243483/image_publisher.py
   ias0220_243483/camera_calibration.py
+  ias0220_243483/object_recognition.py
   DESTINATION lib/${PROJECT_NAME})
 
 
