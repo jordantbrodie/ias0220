@@ -1,8 +1,8 @@
-"""Task 8.1 - visual servoing (following a stationary ball).
+"""Task 8.1 + 8.2 - visual servoing (following a stationary, then a keyboard-moved ball).
 
 Starts the course simulation (dr_mujoco, branch 'visual_servoing') with MY robot,
-a static transform map -> front_camera_frame and RViz showing the camera image.
-The visual_servoing node is added in a later step.
+the visual_servoing node (PD controller), keyboard teleop for the ball (Task 8.2),
+a static transform map -> front_camera_frame and RViz showing camera, tracking and mask images.
 """
 
 import os
@@ -42,6 +42,22 @@ def generate_launch_description():
         output='screen',
     )
 
+    # Task 8.2: keyboard control of the BALL.
+    # teleop publishes Twist on /cmd_vel -> remapped to /cmd_vel/ball, so the keys move the ball,
+    # never the robot. The simulator moves the ball by linear.x/linear.y * 0.1 s per message
+    # (world frame, angular.z ignored) -> use i / , (x) and Shift+j / Shift+l (y); Shift+. = towards the X.
+    # It reads the keyboard, so it runs in its own xterm window.
+    # speed 0.1: holding a key (~30 repeats/s) moves the ball ~0.3 m/s, robot max is 0.35 m/s.
+    ball_teleop = Node(
+        package='teleop_twist_keyboard',
+        executable='teleop_twist_keyboard',
+        name='ball_teleop',
+        prefix='xterm -e',
+        parameters=[{'speed': 0.1}],
+        remappings=[('/cmd_vel', '/cmd_vel/ball')],
+        output='screen',
+    )
+
     # The simulator publishes no TF, but the images have frame_id 'front_camera_frame'.
     # This fixed (identity) transform map -> front_camera_frame clears RViz's fixed-frame warning.
     static_tf = Node(
@@ -63,6 +79,7 @@ def generate_launch_description():
     return LaunchDescription([
         simulation,
         visual_servoing,
+        ball_teleop,
         static_tf,
         rviz,
     ])

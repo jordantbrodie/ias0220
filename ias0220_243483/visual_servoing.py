@@ -17,8 +17,10 @@ Errors and PD control (image-based visual servoing):
   omega = kp_w * e_w + kd_w * de_w/dt
   de/dt = (e - e_previous) / dt   (backward difference, dt from the image time stamps)
 
-No ball in the image -> v = omega = 0 and the derivative history is reset
-(Task 8.2 will rotate to search instead, see handle_no_ball()).
+No ball in the image (Task 8.2, search mode, see handle_no_ball()):
+  v = 0 and omega = +-search_angular_speed (small, constant), direction from the LAST
+  position where the ball was seen: x_n < 0.5 (left half) -> turn left, else turn right.
+  The derivative history is reset, so after re-detection the first derivative is 0 (Hint).
 
 All limits and gains are ROS parameters, tune live with:
   ros2 param set /visual_servoing <name> <value>
@@ -76,6 +78,11 @@ class VisualServoing(Node):
         self.declare_parameter('max_linear_speed', 0.35)    # [m/s]   wheels can do 0.36 m/s at most
         self.declare_parameter('max_angular_speed', 1.0)    # [rad/s]
 
+        # Task 8.2 search mode: constant turning speed while the ball is not visible [rad/s].
+        # Small, so the 10 Hz camera sees the ball again before it has turned past it
+        # (0.4 rad/s = ~2.3 deg per image; the image is ~75 deg wide).
+        self.declare_parameter('search_angular_speed', 0.4)
+
         # "Arrived" zone: if BOTH errors are this small, send exactly v = omega = 0.
         # Needed because tiny commands (< ~0.014 m/s) cannot beat the wheel friction
         # (kv 0.05 * 0.4 rad/s = frictionloss 0.02), so the robot would stand still while
@@ -90,6 +97,10 @@ class VisualServoing(Node):
         self.prev_e_v = None
         self.prev_e_w = None
         self.prev_time = None
+
+        # Task 8.2: last horizontal position where the ball was seen (0..1), for the search direction.
+        # Before the ball is ever seen: 0.0 = "left" -> the first search turns left.
+        self.last_x_n = 0.0
 
         self.bridge = CvBridge()   # converts ROS Image <-> OpenCV image (numpy array)
 
@@ -119,6 +130,7 @@ class VisualServoing(Node):
             cx, cy, radius = ball
             x_n = cx / width
             d_n = (2.0 * radius) / width
+            self.last_x_n = x_n   # remember the side, in case the ball is lost next
 
             # 4. PD control -> velocity command
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9   # [s]
@@ -215,10 +227,21 @@ class VisualServoing(Node):
         return v, w
 
     def handle_no_ball(self):
-        """Task 8.1: stop and forget the derivative history. (Task 8.2: rotate to search here.)"""
+        """Task 8.2 search mode: no forward motion, turn on the spot towards the side
+        where the ball was last seen. Also forget the derivative history (Hint)."""
         self.reset_derivative()
-        self.publish_cmd(0.0, 0.0)
-        self.get_logger().info('no ball -> stop', throttle_duration_sec=1.0)
+
+        search_w = self.get_parameter('search_angular_speed').value
+        if self.last_x_n < 0.5:
+            w = search_w      # last seen in the LEFT half  -> turn left  (omega > 0)
+            side = 'left'
+        else:
+            w = -search_w     # last seen in the RIGHT half -> turn right (omega < 0)
+            side = 'right'
+
+        self.publish_cmd(0.0, w)   # v = 0: stop forward/backward motion
+        self.get_logger().info(f'no ball -> searching, turning {side} (w={w:+.2f})',
+                               throttle_duration_sec=1.0)
 
     def reset_derivative(self):
         """Without this, the first derivative after the ball reappears would be a huge spike."""
