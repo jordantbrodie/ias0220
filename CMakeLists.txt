@@ -27,6 +27,7 @@ install(PROGRAMS
   ias0220_243483/image_publisher.py
   ias0220_243483/camera_calibration.py
   ias0220_243483/object_recognition.py
+  ias0220_243483/simple_control.py
   DESTINATION lib/${PROJECT_NAME})
 
 
