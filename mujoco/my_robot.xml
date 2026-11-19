@@ -12,7 +12,7 @@
     <!-- Ground plane removed for Task 4: dr_mujoco provides its own floor (defining it twice crashes MuJoCo). -->
 
     <body name="base_body" pos="0 0 0.036">
-      <joint type="free"/>
+      <joint name="my_robot" type="free"/>
       <!-- solid cylinder r=0.174, h=0.02, m=0.2 -->
       <inertial pos="0 0 0" mass="0.2" diaginertia="1.52047e-3 1.52047e-3 3.0276e-3"/>
       <geom group="1" contype="0" conaffinity="0" type="cylinder" size="0.174 0.01" material="robot_pink_matte" rgba="1 0.41 0.71 1"/>
